@@ -8,7 +8,7 @@ import torch
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
 
-from models.rlnc_model import RlncModelV1, RlncModelV2, MultiModelEnsembler, EmaModelWrapper, MultiAugmentedInferencer
+from models.rlnc_models import RlncModelV1, RlncModelV2, MultiModelEnsembler, EmaModelWrapper, MultiAugmentedInferencer
 
 logging.basicConfig(
     level=logging.DEBUG,

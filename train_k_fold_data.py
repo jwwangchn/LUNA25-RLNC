@@ -27,7 +27,7 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 from dataloader import CTCaseDataset, worker_init_fn
 
-# 全局变量
+# global variables
 config = None
 WRITER = None
 DEVICE = None
@@ -675,6 +675,7 @@ if __name__ == "__main__":
     parser.add_argument('--config', type=str, required=True, help='config file name, no .py')
     parser.add_argument('--device', type=int, default=0)
     parser.add_argument('--epoch', type=int, default=50)
+    parser.add_argument('--k_fold', type=int, default=-1)
     args = parser.parse_args()
 
     # set global device
@@ -684,9 +685,13 @@ if __name__ == "__main__":
     config.EPOCHS = args.epoch
     config.WARM_EPOCHS = args.epoch // 10
     
+    # if k_fold is set, use k_fold in args
+    if args.k_fold != -1:
+        config.K_FOLDS = args.k_fold
+    
     set_seed(config.SEED)
 
-    experiment_name = f"{config.EXPERIMENT_NAME}-{config.MODE}-epoch{config.EPOCHS}-{datetime.today().strftime('%Y%m%d_%H%M%S')}"
+    experiment_name = f"{config.EXPERIMENT_NAME}-{config.MODE}-epoch{config.EPOCHS}-k_fold{config.K_FOLDS}-{datetime.today().strftime('%Y%m%d_%H%M%S')}"
     exp_save_root = config.EXPERIMENT_DIR / experiment_name
     exp_save_root.mkdir(parents=True, exist_ok=True)
     

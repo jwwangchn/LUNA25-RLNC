@@ -1,16 +1,14 @@
 import io
 import os
 import logging
-import copy
 import numpy as np
 import dataloader
 import torch
-import torch.nn as nn
 
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
 
-from model import LUNA25Model_V1, LUNA25Model_V2, ModelEnsembler, ModelWrapper, MultiInferencer
+from models.rlnc_model import RlncModelV1, RlncModelV2, MultiModelEnsembler, EmaModelWrapper, MultiAugmentedInferencer
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -55,8 +53,8 @@ class MalignancyProcessor:
             decrypted_buffer = self.decrypt(checkpoint_path, "luna25")
             checkpoint = torch.load(decrypted_buffer)
         
-            model = LUNA25Model_V2(classes=1, pretrained=False).cuda()
-            model = ModelWrapper(model)
+            model = RlncModelV2(classes=1, pretrained=False).cuda()
+            model = EmaModelWrapper(model)
             model.load_state_dict(checkpoint['model_state_dict'])
             model.eval()
             
@@ -70,13 +68,13 @@ class MalignancyProcessor:
         print("load model: ", checkpoint_path)
         decrypted_buffer = self.decrypt(checkpoint_path, "luna25")
         checkpoint = torch.load(decrypted_buffer)
-        model = LUNA25Model_V1(classes=1, pretrained=False).cuda()
+        model = RlncModelV1(classes=1, pretrained=False).cuda()
         model.load_state_dict(checkpoint['model_state_dict'])
         model.eval()
         
         ensemble_models.append(model)
         
-        self.ensemble_model = ModelEnsembler(ensemble_models)
+        self.ensemble_model = MultiModelEnsembler(ensemble_models)
 
     def define_inputs(self, ct_volume, header_info, nodule_coordinates):
         """
@@ -144,7 +142,7 @@ class MalignancyProcessor:
             for position in self.nodule_positions
         ]
         patch_tensor = torch.from_numpy(np.array(patch_collection)).cuda()
-        infer = MultiInferencer(model=self.ensemble_model, device=patch_tensor.device)
+        infer = MultiAugmentedInferencer(model=self.ensemble_model, device=patch_tensor.device)
 
         return infer(patch_tensor).cpu().numpy()
 

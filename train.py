@@ -8,6 +8,8 @@ import random
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
+from datetime import datetime
+
 import copy
 import pprint
 import shutil
@@ -16,12 +18,13 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.tensorboard import SummaryWriter
-from torch.utils.data import DataLoader, Subset, WeightedRandomSampler, ConcatDataset
+from torch.utils.data import DataLoader, Subset, ConcatDataset
 from torch.optim.lr_scheduler import CosineAnnealingLR, LinearLR, SequentialLR
+
 from sklearn.model_selection import StratifiedGroupKFold
-from datetime import datetime
 import sklearn.metrics as metrics
-from sklearn.metrics import roc_auc_score, roc_curve, average_precision_score, classification_report, confusion_matrix
+from sklearn.metrics import roc_auc_score, roc_curve
+
 from dataloader import CTCaseDataset, worker_init_fn
 
 # 全局变量
@@ -57,14 +60,23 @@ def init_logger(log_path: str = "logs/train.log"):
 
 
 def load_config(config_name: str):
+    """
+    Load the configuration file and return its contents.
+
+    Args:
+        config_name (str): The name of the configuration file.
+
+    Returns:
+        dict: The contents of the configuration file.
+    """
     sys.path.append(os.path.abspath('.'))
     module_path = f"configs.{config_name}"
     config_module = importlib.import_module(module_path)
     return getattr(config_module, 'config')
 
-class ModelEmaV2(nn.Module):
+class ModelEma(nn.Module):
     def __init__(self, model, decay=0.9999, device=None):
-        super(ModelEmaV2, self).__init__()
+        super(ModelEma, self).__init__()
         # make a copy of the model for accumulating moving average of weights
         self.module = copy.deepcopy(model)
         self.module.eval()
@@ -338,7 +350,7 @@ class KFoldTrainer:
         self.fold_idx = fold_idx
         self.device = DEVICE
         self.model = copy.deepcopy(self.config.MODE_CLASS).to(self.device)
-        self.ema_model = ModelEmaV2(self.model, decay=self.config.EMA_DECAY, device=self.device)
+        self.ema_model = ModelEma(self.model, decay=self.config.EMA_DECAY, device=self.device)
         
         self.optimizer = self._init_optimizer()
         self.scheduler = self._init_scheduler(self.optimizer, self.config.EPOCHS)
@@ -473,7 +485,7 @@ class KFoldTrainer:
         metrics["validate_loss"] = epoch_loss
         
         ema_evaluator = Evaluator(self.y_true, self.ema_y_pred)
-        ema_metrics = evaluator.run()
+        ema_metrics = ema_evaluator.run()
         ema_metrics["validate_loss"] = ema_epoch_loss
         
         return metrics, ema_metrics

@@ -58,7 +58,7 @@ class RlncModelV2(nn.Module):
         return self.resnet3d(input_tensor)
 
 
-class ModelEnsembler:
+class MultiModelEnsembler:
     def __init__(self, model_list):
         self.models = model_list
 
@@ -68,14 +68,14 @@ class ModelEnsembler:
             return torch.stack(predictions).mean(dim=0)
 
 
-class ModelWrapper(nn.Module):
+class EmaModelWrapper(nn.Module):
     def __init__(self, model):
-        super(ModelWrapper, self).__init__()
+        super(EmaModelWrapper, self).__init__()
         self.module = copy.deepcopy(model)
         self.module.eval()
 
 
-class MultiInferencer:
+class MultiAugmentedInferencer:
     def __init__(self, model, device):
         self.model = model
         self.device = device

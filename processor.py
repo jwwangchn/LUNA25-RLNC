@@ -48,9 +48,9 @@ class MalignancyProcessor:
         """
         ensemble_models = []
         for fold_idx in range(self.fold_num):
-            checkpoint_path = os.path.join(self.model_directory, self.model_folder, f"model{fold_idx}.bin")
+            checkpoint_path = os.path.join(self.model_directory, self.model_folder, f"fold_{fold_idx}_epoch{fold_idx}_ema.bin")
             print("load model: ", checkpoint_path)
-            decrypted_buffer = self.decrypt(checkpoint_path, "luna25")
+            decrypted_buffer = self.decrypt(checkpoint_path, "luna25-12345")
             checkpoint = torch.load(decrypted_buffer)
         
             model = RlncModelV2(classes=1, pretrained=False).cuda()
@@ -63,10 +63,10 @@ class MalignancyProcessor:
         checkpoint_path = os.path.join(
             self.model_directory,
             self.model_folder,
-            "fullmodel.bin"
+            "best_metric_model.bin"
         )
         print("load model: ", checkpoint_path)
-        decrypted_buffer = self.decrypt(checkpoint_path, "luna25")
+        decrypted_buffer = self.decrypt(checkpoint_path, "luna25-12345")
         checkpoint = torch.load(decrypted_buffer)
         model = RlncModelV1(classes=1, pretrained=False).cuda()
         model.load_state_dict(checkpoint['model_state_dict'])

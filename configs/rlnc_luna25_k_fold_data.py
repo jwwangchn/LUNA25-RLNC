@@ -37,7 +37,7 @@ class Configuration(object):
         self.PATCH_SIZE = [64, 128, 128]
         self.LEARNING_RATE = 3e-4
         self.WEIGHT_DECAY = 1e-4
-        self.EXPERIMENT_NAME = f"LUNA25-RLNC-epoch{self.EPOCHS}"
+        self.EXPERIMENT_NAME = f"LUNA25-RLNC-K-FOLD-DATA-epoch{self.EPOCHS}"
         self.K_FOLDS = 5
         self.EMA_DECAY = 0.95
     

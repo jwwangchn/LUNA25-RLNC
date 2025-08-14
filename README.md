@@ -56,7 +56,7 @@ data/
     └── metadata/                                        <-- Nodule metadata
 ```
 
-### Configuration File Setup
+## ⚙️ Configuration File Setup
 
 Before starting the training, you must set the correct data paths and key parameters in the configuration files located in the `configs/` folder (e.g., `rlnc_luna25_full_data.py` and `rlnc_luna25_k_fold_data.py`).
 
@@ -154,13 +154,3 @@ We would like to extend our sincere thanks to the LUNA25 Challenge organizing co
 
 If you use this codebase in your research, please consider citing our work:
 
-```
-@misc{rlnc2024,
-  author       = {Your Name/Team Name},
-  title        = {RLNC: A Robust Framework for Lung Nodule Malignancy Classification},
-  year         = {2024},
-  publisher    = {GitHub},
-  journal      = {GitHub repository},
-  howpublished = {\url{https://github.com/your-repo-link}}
-}
-```

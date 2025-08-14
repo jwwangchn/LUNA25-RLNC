@@ -147,7 +147,8 @@ For questions, please refer to the LUNA25 Challenge Page. Good luck!
 python tools/model_encrypt.py
 ```
 
-Important: Before running this script, you must open `tools/model_encrypt.py` and modify the parameters (e.g., model paths, output paths) to match your specific setup.
+> [!NOTE] Important
+> Before running this script, you must open `tools/model_encrypt.py` and modify the parameters (e.g., model paths, output paths) to match your specific setup.
 
 ## 🙏 Acknowledgements and Citation
 We would like to extend our sincere thanks to the LUNA25 Challenge organizing committee for providing the valuable dataset and competition platform.

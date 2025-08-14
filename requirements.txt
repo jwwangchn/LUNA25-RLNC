@@ -6,3 +6,6 @@ pandas==1.4.0
 simpleitk==2.2.0
 scikit-learn==1.5.0
 pycryptodome==3.23.0
+MedPy==0.4.0
+pylidc==0.2.1
+tqdm==4.42.1

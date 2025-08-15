@@ -36,7 +36,7 @@ def modify_and_encrypt_model(input_path, output_path, password):
 
 if __name__ == '__main__':
     # set password
-    password = "luna25-12345"
+    password = "xxxxxxxx"
     
     # full dataset model
     k_fold1_model_dir = "results/LUNA25-RLNC-epoch50-3D-epoch50-k_fold1"

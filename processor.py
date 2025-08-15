@@ -66,7 +66,7 @@ class MalignancyProcessor:
             "best_metric_model.bin"
         )
         print("load model: ", checkpoint_path)
-        decrypted_buffer = self.decrypt(checkpoint_path, "luna25-12345")
+        decrypted_buffer = self.decrypt(checkpoint_path, "xxxx")
         checkpoint = torch.load(decrypted_buffer)
         model = RlncModelV1(classes=1, pretrained=False).cuda()
         model.load_state_dict(checkpoint['model_state_dict'])

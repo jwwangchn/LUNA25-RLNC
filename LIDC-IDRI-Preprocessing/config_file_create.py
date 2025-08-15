@@ -8,18 +8,18 @@ if __name__ == "__main__":
     # prepare_dataset.py configuration
     config['prepare_dataset'] = {
         #Path To LIDC Dataset
-        'LIDC_DICOM_PATH': '/mnt/workspace/workgroup/weining.wjw/02-Codes/LUNA25-AI4Lung/data/LIDC-IDRI-Full/LIDC_IDRI',
+        'LIDC_DICOM_PATH': 'data/LIDC-IDRI-Full/LIDC_IDRI',
         # Directory to save the output files
         # Directory for masks
-        'MASK_PATH':'/mnt_huaniu/xinyang.lxy/datasets/medical/LIDC/data/Mask',
+        'MASK_PATH':'data/Mask',
         # Directory for images
-        'IMAGE_PATH':'/mnt_huaniu/xinyang.lxy/datasets/medical/LIDC/data/Image',
+        'IMAGE_PATH':'data/Image',
         # To save images and mask that doesn't contain any nodule or cancer
         # These images will be used later to evaluate our model
-        'CLEAN_PATH_IMAGE':'/mnt_huaniu/xinyang.lxy/datasets/medical/LIDC/data/Clean/Image',
-        'CLEAN_PATH_MASK':'/mnt_huaniu/xinyang.lxy/datasets/medical/LIDC/data/Clean/Mask',
+        'CLEAN_PATH_IMAGE':'data/Clean/Image',
+        'CLEAN_PATH_MASK':'data/Clean/Mask',
         # CSV file containing nodule information, malignancy, train test split
-        'META_PATH': '/mnt_huaniu/xinyang.lxy/datasets/medical/LIDC/data/Meta/',
+        'META_PATH': 'data/Meta/',
         # Mask Threshold is the np.sum(MASK) threshold. Some Masks are too small. We remove these small images,masks as they might act as outliers
         # The threshold 8 was decided by empirical evaluation.
         'Mask_Threshold':8
